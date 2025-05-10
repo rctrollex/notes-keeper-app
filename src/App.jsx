@@ -1,8 +1,13 @@
 import React from 'react'
+import Header from "./components/Header.jsx";
+import NoteForm from "./components/NoteForm.jsx";
 
 const App = () => {
     return (
-        <div>App</div>
+        <div className="bg-white dark:bg-gray-800 min-h-screen p-3 sm:p-6 md:p-6 font-sans">
+            <Header />
+            <NoteForm />
+        </div>
     )
 }
 export default App
