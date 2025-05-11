@@ -13,6 +13,28 @@ const NoteList = () =>{
             timestamp: new Date().toISOString(),
         },
         // Add more sample notes for testing
+        {
+            id: 2,
+            title: 'Project Meeting',
+            content: 'Discuss project milestones and deadlines with the team',
+            category: 'Personal',
+            timestamp: new Date().toISOString(),
+        },
+        {
+            id: 3,
+            title: 'Project Meeting',
+            content: 'Discuss project milestones and deadlines with the team',
+            category: 'ideas',
+            timestamp: new Date().toISOString(),
+        },
+        // Add more sample notes for testing
+        {
+            id: 4,
+            title: 'Project Meeting',
+            content: 'Discuss project milestones and deadlines with the team',
+            category: 'others',
+            timestamp: new Date().toISOString(),
+        },
     ]
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
