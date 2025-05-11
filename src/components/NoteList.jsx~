@@ -4,6 +4,7 @@ import NoteCard from "./NoteCard.jsx";
 
     //Temporary sample data until Appwrite is integrated
 const NoteList = () =>{
+
     const sampleNotes=[
         {
             id: 1,

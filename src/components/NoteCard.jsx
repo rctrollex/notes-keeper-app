@@ -15,7 +15,7 @@ const NoteCard = ({title, content, category, timestamp, onEdit, onDelete}) => {
             <h3 className="text-gray-900 dark:text-white font-bold text-lg">{title}</h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">{content}</p>
             <div className="mt-2 mb-2">
-                <span className={`${colors.bg}${colors.text} rounded-lg text-sm px-2 py-1 capitalize`}>
+                <span className={`${colors.bg} ${colors.text} rounded-lg text-sm px-2 py-1 capitalize`}>
                     {category}
                 </span>
             </div>
@@ -23,11 +23,11 @@ const NoteCard = ({title, content, category, timestamp, onEdit, onDelete}) => {
                 Last Updated: {new Date(timestamp).toLocaleDateString()}
             </p>
 
-            <div className="flex justify-start space x-3 mt-2">
-                <button onClick={onEdit} className={"text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"}>
+            <div className="flex justify-start space-x-3 mt-2">
+                <button onClick={onEdit} className={"text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"}>
                     Edit
                 </button>
-                <button onClick={onDelete} className={"text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"}>
+                <button onClick={onDelete} className={"text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 cursor-pointer"}>
                     Delete
                 </button>
             </div>
