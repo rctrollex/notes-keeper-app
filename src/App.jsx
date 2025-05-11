@@ -7,9 +7,12 @@ import NoteCard from "./components/NoteCard.jsx";
 const App = () => {
     return (
         <div className="bg-white dark:bg-gray-800 min-h-screen p-3 sm:p-6 md:p-6 font-sans">
-            <Header />
-            <NoteForm />
-            <NoteList />
+            <div className="container mx-auto max-w-4xl">
+                <Header />
+                <NoteForm />
+                <NoteList />
+            </div>
+
         </div>
     )
 }

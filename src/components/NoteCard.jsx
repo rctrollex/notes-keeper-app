@@ -8,7 +8,7 @@ const NoteCard = () => {
                     <h3 className="text-gray-900 dark:text-white font-bold text-lg">Project Meeting</h3>
                     <p className="text-gray-400 dark:text-gray-300 font-light  text-sm mt-1">Discuss project milestones and deadlines with the team.</p>
                     <div className="mt-2 mb-2">
-                        <span className="text-blue-500 button bg-blue-300 rounded-lg text-sm px-2 py-1">Work</span>
+                        <span className="text-blue-600 button bg-blue-300 rounded-lg text-sm px-2 py-1">Work</span>
                     </div>
                     <p className="text-gray-400 dark:text-gray-300 font-light text-xs mt-1">Last updated: May 10, 2025</p>
                     <div className="flex justify-start space-x-3">

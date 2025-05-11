@@ -36,7 +36,7 @@ const NoteForm = () => {
                     </div>
                     <div className="mb-6">
                         <button
-                            className="w-full bg-blue-300 p-3 rounded-lg text-gray-800 cursor hover:bg-blue-400 hover:text-white focus:outline-none focus:ring-2 focus:bg-blue-400"
+                            className="w-full bg-blue-300 p-3 rounded-lg text-gray-800 cursor hover:bg-blue-400 hover:text-white focus:outline-none focus:ring-2 focus:bg-blue-400 cursor-pointer"
                             type="submit"
                             id="addNote"
                         >
