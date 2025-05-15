@@ -1,15 +1,51 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {databaseId} from "../services/appwrite.js";
+import {collectionId} from "../services/appwrite.js";
+import {databases} from "../services/appwrite.js";
 
 const NoteForm = () => {
+    const [title, setTitle]=useState('');
+    const [content, setContent]=useState('');
+    const [category, setCategory]=useState('');
+    const [errorMessage, setErrorMessage]=useState(null)
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        if(!title || !category || !content){
+            setErrorMessage("Please insert values");
+            return;
+        }
+        setErrorMessage('')
+
+        try{
+            const newNote= await databases.createDocument(
+                databaseId,
+                collectionId,
+                'unique()',
+                {
+                    title,
+                    content,
+                    category
+                }
+            );
+            console.log('Created New Note ', newNote);
+            setTitle('');
+            setContent('')
+        }catch (e) {
+            console.log('Error: ',e)
+        }
+    }
     return (
         <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-6">
-            <form>
+            <form onClick={handleSubmit}>
                 <div className="mb-6">
                     <input
                         type="text"
                         placeholder="Note Title"
                         id="noteTitle"
                         className="text-gray-900 dark:text-white w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
                 <div className="mb-6">
@@ -17,12 +53,17 @@ const NoteForm = () => {
                         placeholder="Note Content"
                         id="noteContent"
                         className="text-gray-900 h-32 dark:text-white w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-trasparent"
+                        value={content}
+                        onChange={(e)=>setContent(e.target.value)}
                     ></textarea>
                 </div>
                 <div className="mb-6">
                     <select
                         id="noteCategory"
-                        className="text-gray-900 dark:text-white w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus-blue-300 focus:border-transparent">
+                        className="text-gray-900 dark:text-white w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus-blue-300 focus:border-transparent"
+                        value={category}
+                        onChange={(e)=>setCategory(e.target.value)}
+                    >
                             <option value="" className="bg-gray-500 text-white">Select Category</option>
                             <option value="work" className="bg-gray-500 text-white">Work</option>
                             <option value="personal" className="bg-gray-500 text-white">Personal</option>
