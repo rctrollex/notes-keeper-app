@@ -11,6 +11,7 @@ const NoteList = () =>{
     const [error ,setError]= useState(null);
     const [notes, setNotes]= useState([])
     const [isLoading, setIsLoading] = useState(false);
+
     const fetchNotes = async () =>{
         setIsLoading(true);
         try{
@@ -32,6 +33,12 @@ const NoteList = () =>{
         fetchNotes()
     },[])
 
+    if (notes.length === 0){
+        return(
+            <p className="text-gray-500 text-base text-center">No notes yet.</p>
+        )
+    }
+
     if(error){
         return(
             <p className="text-red-500 text-base">{error}</p>
@@ -43,6 +50,15 @@ const NoteList = () =>{
             <Loader/>
         )
 
+    }
+
+    const handleDelete = async (noteID)=>{
+        try{
+            await databases.deleteDocument(databaseId, collectionId, noteID)
+            setNotes(prevNotes=> prevNotes.filter(note=> note.$id !== noteID));
+        }catch (e) {
+            console.log("Error deleting",e)
+        }
     }
 
 
@@ -57,7 +73,7 @@ const NoteList = () =>{
                     category={note.category}
                     timestamp={note.$createdAt}
                     onEdit={()=> console.log(`Edit note ${note.id}`)}
-                    onDelete={()=>console.log(`Delete note ${note.id}`)}
+                    onDelete={()=>handleDelete(note.$id)}
                 />
             ))}
         </div>

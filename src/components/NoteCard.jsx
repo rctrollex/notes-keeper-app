@@ -1,4 +1,5 @@
 import React from 'react'
+import NoteList from "./NoteList.jsx";
 
 const NoteCard = ({title, content, category, timestamp, onEdit, onDelete}) => {
     const categoryColors = {
