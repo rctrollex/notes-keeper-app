@@ -1,0 +1,10 @@
+import React from 'react'
+
+const Loader = () => {
+    return (
+        <div>
+            <TrophySpin color="#4df5fe" size="medium" text="Loading..." textColor="#2cf5ff" />
+        </div>
+    )
+}
+export default Loader

@@ -1,48 +1,61 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import NoteCard from "./NoteCard.jsx";
+import Loader from "./Loader.jsx";
+import {databases} from "../services/appwrite.js";
+import {collectionId} from "../services/appwrite.js";
+import {databaseId} from "../services/appwrite.js";
 
 
     //Temporary sample data until Appwrite is integrated
 const NoteList = () =>{
-    const sampleNotes=[
-        {
-            "id": 1,
-            "title": "Stand-up Meeting Notes",
-            "content": "Discussed progress on current tasks and any roadblocks encountered during the daily stand-up.",
-            "category": "Work",
-            "timestamp": new Date().toISOString()
-        },
-        {
-            "id": 2,
-            "title": "Book Appointment with Dentist",
-            "content": "Need to call the dentist's office to schedule a routine check-up.",
-            "category": "Personal",
-            "timestamp": new Date().toISOString()
-        },
-        {
-            "id": 3,
-            "title": "Ideas for Portfolio Project",
-            "content": "Brainstorming potential features for the personal portfolio website.",
-            "category": "ideas",
-            "timestamp": new Date().toISOString()
-        },
-        {
-            "id": 4,
-            "title": "Follow Tech Newsletters",
-            "content": "Consider subscribing to a few popular tech newsletters to stay updated.",
-            "category": "others",
-            "timestamp": new Date().toISOString()
+    const [error ,setError]= useState(null);
+    const [notes, setNotes]= useState([])
+    const [isLoading, setIsLoading] = useState(false);
+    const fetchNotes = async () =>{
+        setIsLoading(true);
+        try{
+            const response = await databases.listDocuments(databaseId, collectionId);
+            setNotes(response.documents);
+            console.log(response);
+        }catch (e) {
+            setError("Error to fetch notes: ")
+            console.log("Error to fetch notes",e);
+        }finally {
+            setIsLoading(false);
         }
-    ]
+        setError(null);
+
+
+    }
+
+    useEffect(()=>{
+        fetchNotes()
+    },[])
+
+    if(error){
+        return(
+            <p className="text-red-500 text-base">{error}</p>
+        )
+    }
+
+    if(isLoading){
+        return(
+            <Loader/>
+        )
+
+    }
+
+
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sampleNotes.map((note)=>(
+            {notes.map((note)=>(
                 <NoteCard
-                    key={note.id}
+                    key={note.$id}
                     title={note.title}
                     content={note.content}
                     category={note.category}
-                    timestamp={note.timestamp}
+                    timestamp={note.$createdAt}
                     onEdit={()=> console.log(`Edit note ${note.id}`)}
                     onDelete={()=>console.log(`Delete note ${note.id}`)}
                 />
