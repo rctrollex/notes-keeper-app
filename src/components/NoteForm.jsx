@@ -39,7 +39,7 @@ const NoteForm = ({onAddNote}) => {
     }
     return (
         <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-6">
-            <form onClick={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-6">
                     <input
                         type="text"
