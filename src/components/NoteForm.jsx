@@ -3,7 +3,7 @@ import {databaseId} from "../services/appwrite.js";
 import {collectionId} from "../services/appwrite.js";
 import {databases} from "../services/appwrite.js";
 
-const NoteForm = () => {
+const NoteForm = ({onAddNote}) => {
     const [title, setTitle]=useState('');
     const [content, setContent]=useState('');
     const [category, setCategory]=useState('');
@@ -31,8 +31,10 @@ const NoteForm = () => {
             console.log('Created New Note ', newNote);
             setTitle('');
             setContent('')
+            onAddNote();
         }catch (e) {
             console.log('Error: ',e)
+            setErrorMessage("Failed to add notes.")
         }
     }
     return (
@@ -80,6 +82,7 @@ const NoteForm = () => {
                         Add Note
                     </button>
                 </div>
+                {errorMessage && <p className="text-red-500 text-xs sm:text-sm mb-2">{errorMessage}</p>}
             </form>
         </div>
     )
