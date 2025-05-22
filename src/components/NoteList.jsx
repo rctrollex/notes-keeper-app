@@ -7,7 +7,7 @@ import {databaseId} from "../services/appwrite.js";
 
 
     //Temporary sample data until Appwrite is integrated
-const NoteList = ({refetchTrigger}) =>{
+const NoteList = ({refetchTrigger, setEditNote}) =>{
     const [error ,setError]= useState(null);
     const [notes, setNotes]= useState([])
     const [isLoading, setIsLoading] = useState(false);
@@ -62,6 +62,15 @@ const NoteList = ({refetchTrigger}) =>{
         }
     }
 
+    const handleEdit = (note) => {
+        setEditNote({
+            $id: note.$id,
+            title: note.title,
+            content: note.content,
+            category: note.category,
+        });
+    };
+
 
 
     return (
@@ -73,7 +82,7 @@ const NoteList = ({refetchTrigger}) =>{
                     content={note.content}
                     category={note.category}
                     timestamp={note.$createdAt}
-                    onEdit={()=> console.log(`Edit note ${note.id}`)}
+                    onEdit={()=> handleEdit(note)}
                     onDelete={()=>handleDelete(note.$id)}
                 />
             ))}

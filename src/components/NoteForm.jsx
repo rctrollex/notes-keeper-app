@@ -1,13 +1,26 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {databaseId} from "../services/appwrite.js";
 import {collectionId} from "../services/appwrite.js";
 import {databases} from "../services/appwrite.js";
 
-const NoteForm = ({onAddNote}) => {
+const NoteForm = ({onAddNote,editNote, setEditNote}) => {
     const [title, setTitle]=useState('');
     const [content, setContent]=useState('');
     const [category, setCategory]=useState('');
     const [errorMessage, setErrorMessage]=useState(null)
+
+    useEffect(() => {
+        if(editNote){
+            setTitle(editNote.title);
+            setContent(editNote.content);
+            setCategory(editNote.category);
+        }else{
+            setTitle('');
+            setContent('');
+            setCategory('');
+        }
+    }, [editNote]);
+
 
     const handleSubmit = async (e)=>{
         e.preventDefault();
@@ -18,24 +31,45 @@ const NoteForm = ({onAddNote}) => {
         setErrorMessage('')
 
         try{
-            const newNote= await databases.createDocument(
-                databaseId,
-                collectionId,
-                'unique()',
-                {
+            if(editNote){
+                // update old one
+                await databases.updateDocument(databaseId, collectionId, editNote.$id, {
                     title,
                     content,
                     category
-                }
-            );
-            console.log('Created New Note ', newNote);
+                });
+                setEditNote(null);
+            }else{
+                //create new one
+                const newNote= await databases.createDocument(
+                    databaseId,
+                    collectionId,
+                    'unique()',
+                    {
+                        title,
+                        content,
+                        category
+                    }
+                );
+                console.log('Created New Note ', newNote);
+            }
             setTitle('');
             setContent('')
+            setCategory('');
+            setEditNote(null);
             onAddNote();
         }catch (e) {
             console.log('Error: ',e)
             setErrorMessage("Failed to add notes.")
         }
+    }
+
+    const handleCancel = () =>{
+        setTitle('');
+        setContent('');
+        setCategory('');
+        setEditNote(null); // Exit edit mode
+        setErrorMessage(null);
     }
     return (
         <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-6">
@@ -75,12 +109,25 @@ const NoteForm = ({onAddNote}) => {
                 </div>
                 <div className="mb-6">
                     <button
-                        className="w-full bg-blue-300 p-3 rounded-lg text-gray-800 cursor hover:bg-blue-400 hover:text-white focus:outline-none focus:ring-2 focus:bg-blue-400 cursor-pointer"
                         type="submit"
-                        id="addNote"
+                        disabled={!title || !content || !category}
+                        className={`w-full p-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2
+                        ${editNote ? 'bg-green-400 hover:bg-green-500' : 'bg-blue-300 hover:bg-blue-400'}
+                        ${(!title || !content || !category) && 'opacity-50 cursor-not-allowed'}
+  `}
                     >
-                        Add Note
+                        {editNote ? 'Update Note' : 'Add Note'}
                     </button>
+                    {editNote && (
+                        <button
+                            type="button"
+                            onClick={handleCancel}
+                            className="w-full mt-3 bg-red-400 p-3 rounded-lg text-white hover:bg-red-400"
+                        >
+                            Cancel
+                        </button>
+                    )}
+
                 </div>
                 {errorMessage && <p className="text-red-500 text-xs sm:text-sm mb-2">{errorMessage}</p>}
             </form>
